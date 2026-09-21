@@ -1,13 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { adminNav } from "@/data/adminNav";
 import Icon from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
+    router.refresh();
+  }
 
   return (
     <aside className="hidden w-64 shrink-0 border-r border-ink-border bg-ink lg:flex lg:flex-col">
@@ -38,12 +45,14 @@ export default function AdminSidebar() {
         })}
       </nav>
       <div className="border-t border-ink-border p-3">
-        <Link
-          href="/"
-          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-mist-400 hover:text-white"
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm text-mist-400 hover:text-white"
         >
-          ← Back to site
-        </Link>
+          <Icon name="HiArrowRightStartOnRectangle" size={18} />
+          Log out
+        </button>
       </div>
     </aside>
   );
