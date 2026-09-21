@@ -1,0 +1,16 @@
+export const adminNav = [
+  { label: "Dashboard", href: "/admin", icon: "HiSquares2X2" },
+  { label: "Projects", href: "/admin/projects", icon: "HiFolderOpen" },
+  { label: "Portfolio", href: "/admin/portfolio", icon: "HiRectangleGroup" },
+  { label: "Blog", href: "/admin/blog", icon: "HiNewspaper" },
+  { label: "Testimonials", href: "/admin/testimonials", icon: "HiChatBubbleLeftRight" },
+  { label: "Submissions", href: "/admin/submissions", icon: "HiEnvelope" },
+  { label: "Applications", href: "/admin/applications", icon: "HiBriefcase" },
+  { label: "Team", href: "/admin/team", icon: "HiUserGroup" },
+  { label: "Services", href: "/admin/services", icon: "HiSparkles" },
+  { label: "Technologies", href: "/admin/technologies", icon: "HiCpuChip" },
+  { label: "FAQs", href: "/admin/faqs", icon: "HiQuestionMarkCircle" },
+  { label: "SEO", href: "/admin/seo", icon: "HiMagnifyingGlass" },
+  { label: "Media Library", href: "/admin/media", icon: "HiPhoto" },
+  { label: "Hero Banners", href: "/admin/hero-banners", icon: "HiPresentationChartBar" },
+];
