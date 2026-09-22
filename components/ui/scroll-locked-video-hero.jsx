@@ -323,7 +323,15 @@ export default function MetroHero({
     // input event is left to fall through to native scrolling — so the
     // handoff has no missed frame.
     function handleForwardIntent(deltaY) {
-      if (targetProgress >= 1 && deltaY > 0) {
+      // >= 0, not > 0: touch deltas are raw integer clientY diffs, and
+      // consecutive touchmove events routinely report the exact same
+      // clientY (delta 0) while a finger is still genuinely swiping
+      // forward, especially as the gesture decelerates near the end of
+      // the video. Wheel deltaY is effectively never exactly 0, so this
+      // only matters for touch — but treating a 0 tick as "reversed"
+      // wiped the overshoot hold counter before it could ever reach
+      // RELEASE_HOLD_PX, so the lock would never release on mobile.
+      if (targetProgress >= 1 && deltaY >= 0) {
         overshoot += deltaY;
         if (overshoot >= RELEASE_HOLD_PX) {
           finishAndRelease();
