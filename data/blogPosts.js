@@ -7,7 +7,7 @@ export const blogPosts = [
     category: "Engineering",
     author: "David Okafor",
     date: "2026-08-12",
-    gradient: "from-accent/40 via-ink-soft to-cyan/30",
+    coverImage: "/images/showcase/platform-launch.jpg",
     content: `Scaling a Next.js application isn't just about adding servers — it's about making deliberate architectural choices early. In this post we walk through caching strategy, ISR tuning, and database connection pooling patterns that let one of our clients grow 40x without a full rewrite.
 
 We start with the rendering strategy: mixing static generation for marketing pages with ISR for semi-dynamic content, and streaming server components for anything truly real-time. Then we cover edge caching, image optimization at scale, and how we instrument Core Web Vitals to catch regressions before users do.`,
@@ -20,7 +20,7 @@ We start with the rendering strategy: mixing static generation for marketing pag
     category: "AI",
     author: "Mei Lin",
     date: "2026-07-28",
-    gradient: "from-cyan/30 via-ink-soft to-accent/40",
+    coverImage: "/images/showcase/idea-desk.jpg",
     content: `Trust in conversational AI is earned through predictability, not cleverness. We cover the design patterns that make AI assistants feel dependable: clear capability boundaries, graceful fallback to human support, and transparent citations when the bot pulls from your knowledge base.`,
   },
   {
@@ -31,7 +31,7 @@ We start with the rendering strategy: mixing static generation for marketing pag
     category: "Product Strategy",
     author: "Aisha Rahman",
     date: "2026-06-15",
-    gradient: "from-accent/30 via-ink-soft to-accent-bright/30",
+    coverImage: "/images/showcase/tech-ecosystem.jpg",
     content: `Not every project fits the same engagement model. This post breaks down when a fixed-scope contract protects you, and when a dedicated team model gives you the flexibility a fast-moving product actually needs.`,
   },
 ];

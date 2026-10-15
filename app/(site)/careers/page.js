@@ -1,10 +1,15 @@
-import PageHero from "@/components/sections/PageHero";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
-import Reveal from "@/components/ui/Reveal";
-import CareerApplicationForm from "@/components/forms/CareerApplicationForm";
+import { HiBriefcase, HiClock, HiMapPin } from "react-icons/hi2";
+
+import PageHero from "@/components/layout/PageHero";
+import Section from "@/components/common/Section";
+import SectionHeading from "@/components/common/SectionHeading";
+import ValueCard from "@/components/common/ValueCard";
+import RowList from "@/components/common/RowList";
+import FadeUp from "@/components/animations/FadeUp";
+import ApiForm from "@/components/common/ApiForm";
+import { GLASS_CARD } from "@/constants/theme";
 import { jobOpenings, perks } from "@/data/jobOpenings";
-import { HiMapPin, HiClock, HiBriefcase } from "react-icons/hi2";
+import { careerFields } from "@/data/contactFields";
 
 export const metadata = {
   title: "Careers",
@@ -12,83 +17,89 @@ export const metadata = {
     "Join Dev World — a remote-first team of senior engineers and designers building ambitious digital products.",
 };
 
+// Department · location · type, with small line icons
+function JobMeta({ job }) {
+  const details = [
+    { icon: HiBriefcase, text: job.department },
+    { icon: HiMapPin, text: job.location },
+    { icon: HiClock, text: job.type },
+  ];
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-[2vw] max-[1025px]:gap-[4vw]">
+      <ul className="flex flex-wrap gap-x-[1.6vw] gap-y-2 text-[1.05vw] text-white/65 max-[1025px]:gap-x-[4vw] max-[1025px]:text-[2.4vw] max-md:text-[3.8vw]">
+        {details.map(({ icon: DetailIcon, text }) => (
+          <li key={text} className="inline-flex items-center gap-[0.4vw] max-[1025px]:gap-[1vw]">
+            <DetailIcon aria-hidden="true" className="size-[1.1em] text-[#F16B0D]" /> {text}
+          </li>
+        ))}
+      </ul>
+      <a
+        href="#apply"
+        className="under-multi-parent text-[1.15vw] text-white max-[1025px]:text-[2.6vw] max-md:text-[4.2vw]"
+        aria-label={`Apply for ${job.title}`}
+      >
+        <span className="under-multi">Apply →</span>
+      </a>
+    </div>
+  );
+}
+
 export default function CareersPage() {
   return (
     <>
       <PageHero
         eyebrow="Careers"
-        title="Build your best work here"
+        title="Build Your Best Work Here"
         description="We're a remote-first team of senior engineers and designers who care deeply about craft. If that's you, we'd love to talk."
       />
 
-      <section className="bg-paper py-20 lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="Life at Dev World" title="What you get" />
-          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {perks.map((perk, i) => (
-              <Reveal key={perk.title} delay={0.04 * i}>
-                <div className="rounded-[20px] border border-paper-border p-8">
-                  <h3 className="text-lg font-semibold text-ink-900">
-                    {perk.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-600">
-                    {perk.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
+      <Section>
+        <SectionHeading eyebrow="Life at Dev World" title="What You Get" />
+        <FadeUp className="mt-[5vw] grid grid-cols-3 gap-x-[3vw] gap-y-[4vw] max-[1025px]:mt-[10vw] max-[1025px]:grid-cols-2 max-md:grid-cols-1 max-md:gap-y-[10vw]">
+          {perks.map((perk, index) => (
+            <ValueCard
+              key={perk.title}
+              number={String(index + 1).padStart(2, "0")}
+              title={perk.title}
+              description={perk.description}
+            />
+          ))}
+        </FadeUp>
+      </Section>
 
-      <section className="bg-paper-soft py-20 lg:py-28">
-        <Container>
-          <SectionHeading eyebrow="Open roles" title="Current openings" />
-          <div className="mt-10 divide-y divide-paper-border rounded-[20px] border border-paper-border bg-white">
-            {jobOpenings.map((job, i) => (
-              <Reveal key={job.slug} delay={0.03 * i}>
-                <div className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <h3 className="text-base font-semibold text-ink-900">
-                      {job.title}
-                    </h3>
-                    <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-500">
-                      <span className="inline-flex items-center gap-1">
-                        <HiBriefcase className="size-3.5" /> {job.department}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <HiMapPin className="size-3.5" /> {job.location}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        <HiClock className="size-3.5" /> {job.type}
-                      </span>
-                    </div>
-                  </div>
-                  <a
-                    href="#apply"
-                    className="text-sm font-medium text-accent hover:text-accent-bright"
-                  >
-                    Apply →
-                  </a>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
+      <Section>
+        <SectionHeading eyebrow="Open roles" title="Current Openings" />
+        <RowList
+          className="mt-[4vw] max-[1025px]:mt-[8vw]"
+          rows={jobOpenings.map((job) => ({
+            key: job.slug,
+            title: job.title,
+            aside: <JobMeta job={job} />,
+          }))}
+        />
+      </Section>
 
-      <section id="apply" className="bg-paper py-20 lg:py-28">
-        <Container width="text">
+      <Section id="apply" className="scroll-mt-[6vw]">
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-[4vw] max-[1025px]:grid-cols-1 max-[1025px]:gap-[8vw]">
           <SectionHeading
             eyebrow="Apply now"
-            title="Tell us about yourself"
-            description="Fill out the form below and we'll get back to you within a week."
+            title="Tell Us About Yourself"
+            description="Fill out the form and we'll get back to you within a week."
+            size="md"
+            className="w-full"
           />
-          <div className="mt-12">
-            <CareerApplicationForm />
+          <div className={`p-[3vw] max-[1025px]:p-8 max-md:p-6 ${GLASS_CARD}`}>
+            <ApiForm
+              endpoint="/api/careers/apply"
+              fields={careerFields}
+              submitLabel="Submit Application"
+              loadingLabel="Submitting..."
+              successMessage="Thanks — we've received your application and will be in touch."
+              errorMessage="Something went wrong. Please try again or email us directly."
+            />
           </div>
-        </Container>
-      </section>
+        </div>
+      </Section>
     </>
   );
 }

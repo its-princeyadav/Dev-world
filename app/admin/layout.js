@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function AdminRootLayout({ children }) {
-  return <div className="min-h-screen bg-paper-soft">{children}</div>;
+  return <div className="min-h-screen bg-paper-soft text-ink-900">{children}</div>;
 }

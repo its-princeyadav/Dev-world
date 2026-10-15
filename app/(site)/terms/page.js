@@ -1,4 +1,4 @@
-import LegalContent from "@/components/sections/LegalContent";
+import LegalContent from "@/components/common/LegalContent";
 
 export const metadata = {
   title: "Terms of Service",

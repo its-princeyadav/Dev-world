@@ -1,8 +1,14 @@
-import PageHero from "@/components/sections/PageHero";
-import Container from "@/components/ui/Container";
-import ContactForm from "@/components/forms/ContactForm";
-import Reveal from "@/components/ui/Reveal";
 import { HiEnvelope, HiMapPin, HiPhone } from "react-icons/hi2";
+
+import PageHero from "@/components/layout/PageHero";
+import Section from "@/components/common/Section";
+import SectionHeading from "@/components/common/SectionHeading";
+import SocialLinks from "@/components/common/SocialLinks";
+import ApiForm from "@/components/common/ApiForm";
+import FadeUp from "@/components/animations/FadeUp";
+import { CONTACT } from "@/constants/site";
+import { GLASS_CARD } from "@/constants/theme";
+import { contactFields } from "@/data/contactFields";
 
 export const metadata = {
   title: "Contact",
@@ -10,10 +16,10 @@ export const metadata = {
     "Get in touch with Dev World — tell us about your project and we'll respond within one business day.",
 };
 
-const contactInfo = [
-  { icon: HiEnvelope, label: "Email", value: "hello@devworld.example.com" },
-  { icon: HiPhone, label: "Phone", value: "+1 (555) 012-3456" },
-  { icon: HiMapPin, label: "Office", value: "148 Market St, San Francisco, CA" },
+const CONTACT_DETAILS = [
+  { icon: HiEnvelope, label: "Email", value: CONTACT.email, href: CONTACT.emailHref },
+  { icon: HiPhone, label: "Phone", value: CONTACT.phone, href: CONTACT.phoneHref },
+  { icon: HiMapPin, label: "Office", value: CONTACT.office },
 ];
 
 export default function ContactPage() {
@@ -21,42 +27,51 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Let's talk about your project"
+        title="Let's Talk About Your Project"
         description="Tell us what you're building — we'll get back to you within one business day."
       />
 
-      <section className="bg-paper py-20 lg:py-28">
-        <Container>
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_1.3fr]">
-            <Reveal>
-              <div>
-                <h2 className="text-xl font-semibold text-ink-900">
-                  Reach us directly
-                </h2>
-                <div className="mt-6 space-y-6">
-                  {contactInfo.map((item) => (
-                    <div key={item.label} className="flex items-start gap-4">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-paper-soft text-accent">
-                        <item.icon className="size-5" />
-                      </span>
-                      <div>
-                        <p className="text-xs text-ink-500">{item.label}</p>
-                        <p className="text-sm font-medium text-ink-900">
-                          {item.value}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <ContactForm />
-            </Reveal>
+      <Section className="pt-[3vw]">
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-[4vw] max-[1025px]:grid-cols-1 max-[1025px]:gap-[10vw]">
+          <div>
+            <SectionHeading title="Reach Us Directly" size="md" className="w-full" />
+            <FadeUp as="ul" className="mt-[3vw] space-y-[2vw] max-[1025px]:mt-[6vw] max-[1025px]:space-y-[5vw]">
+              {CONTACT_DETAILS.map(({ icon: DetailIcon, label, value, href }) => (
+                <li key={label} className="flex items-center gap-[1.2vw] max-[1025px]:gap-[3vw]">
+                  <span className="flex size-[3.4vw] shrink-0 items-center justify-center rounded-full border border-white/20 text-[#F16B0D] max-[1025px]:size-[8vw] max-md:size-[12vw]">
+                    <DetailIcon aria-hidden="true" className="size-[40%]" />
+                  </span>
+                  <div>
+                    <p className="text-[0.95vw] uppercase tracking-[0.12em] text-white/50 max-[1025px]:text-[2vw] max-md:text-[3.2vw]">
+                      {label}
+                    </p>
+                    {href ? (
+                      <a href={href} className="under-multi-parent text-[1.4vw] max-[1025px]:text-[3vw] max-md:text-[4.6vw]">
+                        <span className="under-multi">{value}</span>
+                      </a>
+                    ) : (
+                      <p className="text-[1.4vw] max-[1025px]:text-[3vw] max-md:text-[4.6vw]">{value}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </FadeUp>
+            <div className="mt-[3vw] max-[1025px]:mt-[8vw]">
+              <SocialLinks />
+            </div>
           </div>
-        </Container>
-      </section>
+
+          <div className={`p-[3vw] max-[1025px]:p-8 max-md:p-6 ${GLASS_CARD}`}>
+            <ApiForm
+              endpoint="/api/contact"
+              fields={contactFields}
+              submitLabel="Send Message"
+              successMessage="Thanks — we've received your message and will respond within one business day."
+              errorMessage="Something went wrong. Please try again or email us directly."
+            />
+          </div>
+        </div>
+      </Section>
     </>
   );
 }

@@ -1,20 +1,21 @@
-import SmoothScrollProvider from "@/lib/SmoothScrollProvider";
-import Navbar from "@/components/layout/Navbar";
+import SmoothScrollProvider from "@/context/SmoothScrollProvider";
+import { ContactModalProvider } from "@/context/ContactModalContext";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export default function SiteLayout({ children }) {
   return (
-    <>
-      <a href="#main-content" className="skip-link">
-        Skip to content
-      </a>
-      <SmoothScrollProvider>
-        <Navbar />
-        <main id="main-content" className="flex-1 flex flex-col">
-          {children}
-        </main>
-        <Footer />
-      </SmoothScrollProvider>
-    </>
+    <SmoothScrollProvider>
+      <ContactModalProvider>
+        <div className="site-body">
+          <a href="#main-content" className="skip-link">
+            Skip to content
+          </a>
+          <Header />
+          <main id="main-content">{children}</main>
+          <Footer />
+        </div>
+      </ContactModalProvider>
+    </SmoothScrollProvider>
   );
 }

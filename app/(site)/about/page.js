@@ -1,9 +1,11 @@
-import PageHero from "@/components/sections/PageHero";
-import StatsRow from "@/components/sections/StatsRow";
-import CtaBand from "@/components/sections/CtaBand";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
-import Reveal from "@/components/ui/Reveal";
+import PageHero from "@/components/layout/PageHero";
+import Section from "@/components/common/Section";
+import SectionHeading from "@/components/common/SectionHeading";
+import Stats from "@/components/common/Stats";
+import ValueCard from "@/components/common/ValueCard";
+import FadeUp from "@/components/animations/FadeUp";
+import { GRADIENT } from "@/constants/theme";
+import { aboutStats } from "@/data/stats";
 import { team, values } from "@/data/team";
 
 export const metadata = {
@@ -12,73 +14,69 @@ export const metadata = {
     "Dev World is a full-cycle software studio helping ambitious companies design, build, and scale digital products.",
 };
 
-const stats = [
-  { value: "2016", label: "Founded" },
-  { value: "120+", label: "Products shipped" },
-  { value: "40+", label: "Team members" },
-  { value: "12", label: "Countries served" },
-];
-
 export default function AboutPage() {
   return (
     <>
       <PageHero
         eyebrow="About Dev World"
-        title="We build the software behind ambitious companies"
+        title="We Build the Software Behind Ambitious Companies"
         description="Founded by engineers who got tired of watching great products die to bad execution, Dev World pairs product strategy with senior engineering to ship things that actually work."
       />
 
-      <StatsRow stats={stats} />
+      <Section className="pt-[4vw]">
+        <Stats stats={aboutStats} />
+      </Section>
 
-      <section className="bg-paper py-20 lg:py-28">
-        <Container width="text">
-          <SectionHeading
-            eyebrow="Our values"
-            title="What guides how we work"
-          />
-          <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2">
-            {values.map((value, i) => (
-              <Reveal key={value.title} delay={0.06 * i}>
-                <div className="rounded-[20px] border border-paper-border p-8">
-                  <h3 className="text-lg font-semibold text-ink-900">
-                    {value.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-600">
-                    {value.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
+      <Section>
+        <SectionHeading eyebrow="Our values" title="What Guides How We Work" />
+        <FadeUp className="mt-[5vw] grid grid-cols-2 gap-x-[4vw] gap-y-[4vw] max-[1025px]:mt-[10vw] max-md:grid-cols-1 max-md:gap-y-[10vw]">
+          {values.map((value, index) => (
+            <ValueCard
+              key={value.title}
+              number={String(index + 1).padStart(2, "0")}
+              title={value.title}
+              description={value.description}
+            />
+          ))}
+        </FadeUp>
+      </Section>
 
-      <section className="bg-paper-soft py-20 lg:py-28">
-        <Container>
-          <SectionHeading
-            eyebrow="Leadership"
-            title="Meet the team"
-            description="Senior operators and engineers who've built and scaled products at every stage."
-          />
-          <div className="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-            {team.map((member, i) => (
-              <Reveal key={member.name} delay={0.04 * i}>
-                <div className="text-center">
-                  <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-accent/20 to-cyan/20 font-mono text-lg font-semibold text-accent">
-                    {member.initials}
-                  </div>
-                  <p className="mt-4 text-sm font-semibold text-ink-900">
-                    {member.name}
-                  </p>
-                  <p className="text-xs text-ink-500">{member.role}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <CtaBand />
+      <Section>
+        <SectionHeading
+          eyebrow="Leadership"
+          title="Meet the Team"
+          description="Senior operators and engineers who've built and scaled products at every stage."
+        />
+        <FadeUp
+          as="ul"
+          stagger={0.05}
+          className="mt-[5vw] grid grid-cols-4 gap-[1.6vw] max-[1025px]:mt-[10vw] max-[1025px]:grid-cols-3 max-[1025px]:gap-[3vw] max-md:grid-cols-2"
+        >
+          {team.map((member) => (
+            <li
+              key={member.name}
+              className="group relative overflow-hidden rounded-lg border border-white/15 bg-[#161616] p-[1.6vw] max-[1025px]:p-[3vw] max-md:p-[4vw]"
+            >
+              {/* Gradient that rises from the bottom on hover */}
+              <div
+                aria-hidden="true"
+                className={`absolute inset-0 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 ${GRADIENT}`}
+              />
+              <div className="relative">
+                <span className="flex size-[5vw] items-center justify-center rounded-full border border-white/25 text-[1.5vw] transition-colors duration-500 group-hover:border-white group-hover:bg-white group-hover:text-black max-[1025px]:size-[11vw] max-[1025px]:text-[3.2vw] max-md:size-[16vw] max-md:text-[5vw]">
+                  {member.initials}
+                </span>
+                <p className="mt-[3vw] text-[1.4vw] max-[1025px]:mt-[6vw] max-[1025px]:text-[3vw] max-md:text-[4.6vw]">
+                  {member.name}
+                </p>
+                <p className="mt-[0.3vw] text-[1vw] text-white/60 transition-colors duration-500 group-hover:text-white max-[1025px]:text-[2.2vw] max-md:text-[3.6vw]">
+                  {member.role}
+                </p>
+              </div>
+            </li>
+          ))}
+        </FadeUp>
+      </Section>
     </>
   );
 }

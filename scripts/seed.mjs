@@ -128,6 +128,7 @@ async function seedCaseStudies() {
     challenge: c.challenge,
     solution: c.solution,
     results: c.results,
+    coverImage: c.coverImage,
     published: true,
   }));
   await CaseStudy.deleteMany({});
@@ -143,6 +144,7 @@ async function seedBlogPosts() {
     content: p.content,
     author: p.author,
     category: p.category,
+    coverImage: p.coverImage,
     published: true,
     publishedAt: new Date(p.date),
   }));

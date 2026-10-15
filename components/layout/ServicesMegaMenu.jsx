@@ -1,78 +1,113 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+
+import { gsap, useGSAP } from "@/lib/gsap";
 import { services, featuredServiceSlugs } from "@/data/services";
 import { megaMenuExplore } from "@/data/nav";
-import Container from "@/components/ui/Container";
 import Icon from "@/components/ui/Icon";
+import { ArrowUpRightIcon } from "@/components/common/Icons";
+import { GRADIENT } from "@/constants/theme";
 
-const featured = services.filter((s) => featuredServiceSlugs.includes(s.slug));
+const featured = services.filter((service) => featuredServiceSlugs.includes(service.slug));
 
-export default function ServicesMegaMenu({ onClose }) {
+/**
+ * Glass panel that drops down from the header when "Services" is hovered or focused (desktop only).
+ * Featured services on the left, the "Explore" links on the right.
+ */
+export default function ServicesMegaMenu({ isOpen, onClose }) {
+  const panelRef = useRef(null);
+
+  useGSAP(
+    () => {
+      const panel = panelRef.current;
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      gsap.killTweensOf([panel, ".mega-item"]);
+
+      if (isOpen) {
+        gsap.set(panel, { visibility: "visible" });
+        gsap.fromTo(
+          panel,
+          { opacity: 0, y: reduced ? 0 : -16 },
+          { opacity: 1, y: 0, duration: reduced ? 0.15 : 0.5, ease: "power3.out" },
+        );
+        if (!reduced) {
+          gsap.fromTo(
+            ".mega-item",
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.5, stagger: 0.03, ease: "power3.out", delay: 0.05 },
+          );
+        }
+        return;
+      }
+
+      gsap.to(panel, {
+        opacity: 0,
+        y: reduced ? 0 : -10,
+        duration: reduced ? 0.1 : 0.3,
+        ease: "power2.in",
+        onComplete: () => gsap.set(panel, { visibility: "hidden" }),
+      });
+    },
+    { dependencies: [isOpen], scope: panelRef },
+  );
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-      className="absolute inset-x-0 top-full border-b border-ink-border bg-ink/95 backdrop-blur-lg"
+    <div
+      ref={panelRef}
+      inert={!isOpen}
+      style={{ visibility: "hidden", opacity: 0 }}
+      className="absolute left-[4vw] right-[4vw] top-full max-[1025px]:hidden"
     >
-      <Container className="grid grid-cols-1 gap-10 py-10 lg:grid-cols-[1fr_260px]">
+      <div className="grid grid-cols-[minmax(0,1fr)_18vw] gap-[3vw] rounded-[1.5vw] border border-white/15 bg-[#0b0b0b]/85 backdrop-blur-2xl p-[2.5vw] shadow-2xl">
         <div>
-          <p className="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-mist-400">
-            Featured Services
-          </p>
-          <div className="grid grid-cols-2 gap-2 xl:grid-cols-3">
+          <p className="mb-[1.5vw] text-[0.9vw] uppercase tracking-wider text-white/50">Featured Services</p>
+          <ul className="grid grid-cols-3 gap-[0.5vw]">
             {featured.map((service) => (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                onClick={onClose}
-                className="group flex items-start gap-3 rounded-md p-3 transition-colors hover:bg-ink-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-accent/20 to-cyan/20 text-accent">
-                  <Icon name={service.icon} size={18} />
-                </span>
-                <span>
-                  <span className="block text-sm font-medium text-white">
-                    {service.title}
+              <li key={service.slug} className="mega-item">
+                <Link
+                  href={`/services/${service.slug}`}
+                  onClick={onClose}
+                  className="group flex items-start gap-[1vw] rounded-[1vw] p-[1vw] transition-colors duration-300 hover:bg-white/5"
+                >
+                  <span className="relative flex size-[2.8vw] shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/20 text-[#F16B0D] transition-colors duration-300 group-hover:text-white">
+                    <span
+                      className={`absolute inset-0 scale-0 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-100 ${GRADIENT}`}
+                    />
+                    <Icon name={service.icon} variant="outline" className="relative z-1 size-[1.3vw]" />
                   </span>
-                  <span className="mt-0.5 block text-xs text-mist-400">
-                    {service.short}
+                  <span>
+                    <span className="block text-[1.05vw] text-white">{service.title}</span>
+                    <span className="mt-[0.2vw] block text-[0.85vw] leading-snug text-white/55">{service.short}</span>
                   </span>
-                </span>
-              </Link>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
           <Link
             href="/services"
             onClick={onClose}
-            className="mt-4 inline-block text-sm font-medium text-accent hover:text-accent-bright"
+            className="mega-item under-multi-parent mt-[1.5vw] inline-flex items-center gap-[0.5vw] text-[1vw] text-white"
           >
-            View all services →
+            <span className="under-multi">View all services</span>
+            <ArrowUpRightIcon size={16} />
           </Link>
         </div>
 
-        <div className="border-t border-ink-border pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-          <p className="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-mist-400">
-            Explore
-          </p>
-          <ul className="space-y-3">
+        <div className="border-l border-white/10 pl-[3vw]">
+          <p className="mb-[1.5vw] text-[0.9vw] uppercase tracking-wider text-white/50">Explore</p>
+          <ul className="space-y-[0.9vw]">
             {megaMenuExplore.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={onClose}
-                  className="text-sm text-mist-200 hover:text-white"
-                >
+              <li key={item.href} className="mega-item under-multi-parent">
+                <Link href={item.href} onClick={onClose} className="under-multi text-[1.15vw] text-white">
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-      </Container>
-    </motion.div>
+      </div>
+    </div>
   );
 }

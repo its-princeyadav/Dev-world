@@ -4,7 +4,7 @@ export const caseStudies = [
     title: "Ledger — Real-time Fintech Platform",
     client: "Ledger Financial",
     category: "Web · Fintech",
-    gradient: "from-accent/40 via-ink-soft to-cyan/30",
+    coverImage: "/images/showcase/digital-city.jpg",
     summary:
       "Rebuilt a legacy transaction platform into a real-time, horizontally-scalable system handling 2M+ daily transactions.",
     challenge:
@@ -22,7 +22,7 @@ export const caseStudies = [
     title: "CareLoop — Patient Engagement App",
     client: "CareLoop Health",
     category: "Mobile · Healthtech",
-    gradient: "from-cyan/30 via-ink-soft to-accent/40",
+    coverImage: "/images/showcase/studio-stack.jpg",
     summary:
       "Designed and built a cross-platform patient app that lifted appointment adherence by 35%.",
     challenge:
@@ -40,7 +40,7 @@ export const caseStudies = [
     title: "FleetOS — Logistics Operations Suite",
     client: "FleetOS",
     category: "SaaS · Logistics",
-    gradient: "from-accent/30 via-ink-soft to-accent-bright/30",
+    coverImage: "/images/showcase/global-network.jpg",
     summary:
       "Built a real-time fleet operations dashboard consolidating five legacy tools into one platform.",
     challenge:

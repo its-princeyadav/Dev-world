@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* public/assets holds raw media only; keep it out of the class scan. */
+@source not "../public";
+
+/*
+ * Admin design tokens (the admin panel keeps its solid, data-dense styling).
+ * The public site uses its own design language below (.site-body).
+ */
 :root {
   --color-ink: #0a0c10;
   --color-ink-soft: #12151c;
@@ -71,17 +78,21 @@
   --ease-snappy: var(--ease-snappy);
 }
 
+/* ---------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------- */
 * {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: auto;
+html,
+body {
+  background: #050505;
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink-900);
+  width: 100vw;
+  overflow-x: hidden;
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -96,27 +107,9 @@ body {
 .shadow-elev-lg {
   box-shadow: 0 20px 48px rgba(var(--shadow-color), 0.12);
 }
-.shadow-glow {
-  box-shadow: 0 0 60px rgba(91, 95, 239, 0.25);
-}
 
 .text-balance {
   text-wrap: balance;
-}
-
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
-.bg-radial-glow {
-  background: radial-gradient(
-    circle at 50% 0%,
-    rgba(91, 95, 239, 0.35),
-    transparent 60%
-  );
 }
 
 ::selection {
@@ -124,27 +117,272 @@ body {
   color: white;
 }
 
+/* ---------------------------------------------------------------------------
+ * Public site design language
+ * ------------------------------------------------------------------------- */
+
+/* Brand font (Host Grotesk, loaded in lib/fonts.js) on everything inside the site wrapper */
+.site-body {
+  --default-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  font-weight: 400;
+  color: #fff;
+  background: #050505;
+}
+
+.site-body,
+.site-body * {
+  font-family: var(--font-host-grotesk), sans-serif;
+}
+
+.site-body ::selection {
+  color: #070707;
+  background-color: #f16b0d;
+}
+
+/* Font-weight utilities win over component styles inside the site, as in the original */
+.site-body .font-light {
+  font-weight: 300 !important;
+}
+.site-body .font-normal {
+  font-weight: 400 !important;
+}
+.site-body .font-medium {
+  font-weight: 500 !important;
+}
+.site-body .font-bold {
+  font-weight: 700 !important;
+}
+
+/* Keyboard focus ring in the brand colour */
+.site-body :focus-visible {
+  outline: 2px solid #f16b0d;
+  outline-offset: 3px;
+}
+
 .skip-link {
   position: absolute;
   left: -9999px;
   top: 0;
-  z-index: 100;
-  background: var(--color-accent);
+  z-index: 1000;
+  background: linear-gradient(to right, #f16b0d, #e61416);
   color: white;
   padding: 0.75rem 1.25rem;
-  border-radius: 0 0 8px 0;
+  border-radius: 0 0 1rem 0;
 }
 .skip-link:focus {
   left: 0;
 }
 
+/* Lenis smooth scrolling (recommended base styles) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* ---------------------------------------------------------------------------
+ * Masks driven by a --reveal CSS variable (animated with GSAP)
+ * ------------------------------------------------------------------------- */
+
+/* Hero portrait: a diagonal gradient mask that uncovers the image */
+.hero-mask-reveal {
+  mask-image: linear-gradient(to top left, black var(--reveal, 0%), transparent calc(var(--reveal, 0%) + 25%));
+}
+
+/* Cards: a radial gradient that floods the card with colour on hover */
+.radial-mask-bg-fill {
+  --reveal: 0%;
+  mask-image: radial-gradient(circle at center, black var(--reveal), transparent min(calc(var(--reveal) + 18%), 100%));
+}
+
+/* ---------------------------------------------------------------------------
+ * Hero screenshot grid: two columns that scroll upward forever
+ * (each column holds its images twice, so -51.1% loops seamlessly)
+ * ------------------------------------------------------------------------- */
+.marquee-1 {
+  will-change: transform;
+  animation: marquee-scroll-y 10s linear infinite;
+}
+
+.marquee-2 {
+  will-change: transform;
+  animation: marquee-scroll-y-2 18s linear infinite;
+}
+
+@keyframes marquee-scroll-y {
+  0% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-51.1%);
+  }
+}
+
+@keyframes marquee-scroll-y-2 {
+  0% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-51.1%);
+  }
+}
+
+@media (max-width: 1025px) {
+  @keyframes marquee-scroll-y {
+    0% {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50.27%);
+    }
+  }
+  @keyframes marquee-scroll-y-2 {
+    0% {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50.27%);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Links: underline that grows from the left on hover
+ * ------------------------------------------------------------------------- */
+.under-multi {
+  transition: all 1s var(--default-ease);
+  background-image: linear-gradient(#0000, #0000), linear-gradient(#fff, #fff);
+  background-position:
+    100% 100%,
+    0 100%;
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    100% 0,
+    0% 1px;
+  text-decoration: none;
+}
+
+.under-multi-parent:hover .under-multi,
+.under-multi-parent:focus-visible .under-multi {
+  background-size:
+    100% 0,
+    100% 1px;
+}
+
+/* ---------------------------------------------------------------------------
+ * "Guitar string" dividers (components/ui/PluckString.jsx)
+ * The invisible .box is the hover area; it grows on hover so the string can be pulled further.
+ * ------------------------------------------------------------------------- */
+.string-line {
+  width: 100%;
+  height: 1px;
+  position: relative;
+}
+
+.string-line svg {
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  top: -50px;
+}
+
+.string-line svg path {
+  stroke-width: 1px;
+  stroke: #000;
+  fill: none;
+}
+
+.box {
+  z-index: 1;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  position: relative;
+  top: -20px;
+}
+
+.box:hover {
+  height: 150px;
+  top: -75px;
+}
+
+/* Form placeholders */
+.get-in-touch-form input::placeholder,
+.get-in-touch-form textarea::placeholder {
+  color: #ffffff73;
+}
+
+/* ---------------------------------------------------------------------------
+ * Reduced motion: stop looping animations and lay services out as a grid
+ * ------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .marquee-1,
+  .marquee-2 {
+    animation: none;
+  }
+
+  .box:hover {
+    height: 40px;
+    top: -20px;
+  }
+
+  .services-section {
+    height: auto !important;
+  }
+
+  .services-sticky {
+    height: auto !important;
+    margin-top: 0 !important;
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  .services-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-top: 5vw;
+    width: auto !important;
+    display: grid !important;
+    transform: none !important;
+  }
+
+  .services-card {
+    min-height: 22vw;
+    flex-shrink: 1 !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  @media (max-width: 767px) {
+    .services-row {
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: 12vw;
+    }
+    .services-card {
+      min-height: 0;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1025px) {
+    .services-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-top: 8vw;
+    }
+    .services-card {
+      min-height: 32vw;
+    }
   }
 }

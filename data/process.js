@@ -42,3 +42,32 @@ export const processSteps = [
     deliverables: ["SLA-backed support", "Monthly health review", "Roadmap planning"],
   },
 ];
+
+// The four-step summary shown on the home page.
+// `image` appears in the floating preview when the row is hovered.
+export const processOverview = [
+  {
+    n: "01",
+    title: "Discover",
+    description: "Align on goals, users, and constraints before writing a line of code.",
+    image: "/images/portfolio/portfolio-1.webp",
+  },
+  {
+    n: "02",
+    title: "Design",
+    description: "Prototype and validate the experience with real users, fast.",
+    image: "/images/portfolio/portfolio-2.webp",
+  },
+  {
+    n: "03",
+    title: "Build",
+    description: "Ship in weekly sprints with full visibility into progress.",
+    image: "/images/portfolio/portfolio-3.webp",
+  },
+  {
+    n: "04",
+    title: "Launch & Scale",
+    description: "Deploy, monitor, and iterate with a partner who sticks around.",
+    image: "/images/portfolio/portfolio-4.webp",
+  },
+];

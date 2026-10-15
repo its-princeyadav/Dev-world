@@ -24,3 +24,23 @@ export const technologyGroups = [
     items: ["Jest", "Playwright", "GitHub Actions", "Sentry", "Datadog", "Figma"],
   },
 ];
+
+// Wordmarks that fly through the "Trusted technologies" section on the home page
+export const featuredTechnologies = [
+  "React",
+  "Next.js",
+  "Node.js",
+  "TypeScript",
+  "Python",
+  "AWS",
+  "Kubernetes",
+  "PostgreSQL",
+  "MongoDB",
+  "GraphQL",
+  "Flutter",
+  "Swift",
+  "Kotlin",
+  "Docker",
+  "OpenAI",
+  "Terraform",
+];

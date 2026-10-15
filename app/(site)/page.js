@@ -1,38 +1,35 @@
-import MetroHero from "@/components/ui/scroll-locked-video-hero";
-import StatsRow from "@/components/sections/StatsRow";
-import ServicesGrid from "@/components/sections/ServicesGrid";
-import WhyUs from "@/components/sections/WhyUs";
-import TechMarquee from "@/components/sections/TechMarquee";
-import ProcessTeaser from "@/components/sections/ProcessTeaser";
-import PortfolioTeaser from "@/components/sections/PortfolioTeaser";
-import TestimonialSpotlight from "@/components/sections/TestimonialSpotlight";
-import FaqAccordion from "@/components/sections/FaqAccordion";
-import CtaBand from "@/components/sections/CtaBand";
+import Hero from "@/components/home/Hero";
+import Portfolio from "@/components/home/Portfolio";
+import WhyUs from "@/components/home/WhyUs";
+import Services from "@/components/home/Services";
+import Process from "@/components/home/Process";
+import TechStack from "@/components/home/TechStack";
+import Testimonials from "@/components/home/Testimonials";
+import FAQ from "@/components/home/FAQ";
+import Section from "@/components/common/Section";
+import Stats from "@/components/common/Stats";
+import { homeStats } from "@/data/stats";
+import { faqs } from "@/data/faqs";
 
-const heroStats = [
-  { value: "120+", label: "Products shipped" },
-  { value: "98%", label: "Client retention" },
-  { value: "40+", label: "Engineers & designers" },
-  { value: "12", label: "Countries served" },
-];
+// The five most common questions, shown without their categories
+const homeFaqs = [{ items: faqs.flatMap((group) => group.items).slice(0, 5) }];
 
-export default function Home() {
+// The home page. A Server Component that only arranges the sections in order;
+// each section handles its own content and animations.
+export default function HomePage() {
   return (
     <>
-      <MetroHero
-        title="DEV WORLD"
-        tagline="Engineering exceptional software, end to end."
-        scrollHint="SCROLL"
-      />
-      <StatsRow stats={heroStats} />
-      <ServicesGrid />
+      <Hero />
+      <Portfolio />
       <WhyUs />
-      <TechMarquee />
-      <ProcessTeaser />
-      <PortfolioTeaser />
-      <TestimonialSpotlight />
-      <FaqAccordion />
-      <CtaBand />
+      <Section className="pt-0! pb-[8vw]">
+        <Stats stats={homeStats} />
+      </Section>
+      <Services />
+      <Process />
+      <TechStack />
+      <Testimonials />
+      <FAQ groups={homeFaqs} action={{ label: "View All FAQs", href: "/faqs" }} />
     </>
   );
 }

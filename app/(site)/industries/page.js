@@ -1,8 +1,7 @@
-import PageHero from "@/components/sections/PageHero";
-import CtaBand from "@/components/sections/CtaBand";
-import Container from "@/components/ui/Container";
-import Reveal from "@/components/ui/Reveal";
-import Icon from "@/components/ui/Icon";
+import PageHero from "@/components/layout/PageHero";
+import Section from "@/components/common/Section";
+import ValueCard from "@/components/common/ValueCard";
+import FadeUp from "@/components/animations/FadeUp";
 import { industries } from "@/data/industries";
 
 export const metadata = {
@@ -16,33 +15,23 @@ export default function IndustriesPage() {
     <>
       <PageHero
         eyebrow="Industries"
-        title="Domain expertise that shows up in the details"
+        title="Domain Expertise That Shows Up in the Details"
         description="From compliance-heavy fintech to fast-moving e-commerce, we bring the context to make the right calls early."
       />
 
-      <section className="bg-paper py-20 lg:py-28">
-        <Container>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {industries.map((industry, i) => (
-              <Reveal key={industry.title} delay={0.04 * i}>
-                <div className="rounded-[20px] border border-paper-border p-8">
-                  <span className="inline-flex size-11 items-center justify-center rounded-[14px] bg-gradient-to-br from-accent/15 to-cyan/15 text-accent">
-                    <Icon name={industry.icon} size={22} />
-                  </span>
-                  <h2 className="mt-5 text-lg font-semibold text-ink-900">
-                    {industry.title}
-                  </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-600">
-                    {industry.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <CtaBand />
+      <Section className="pt-[3vw]">
+        <FadeUp className="grid grid-cols-4 gap-x-[3vw] gap-y-[5vw] max-[1025px]:grid-cols-2 max-[1025px]:gap-y-[10vw] max-md:grid-cols-1">
+          {industries.map((industry) => (
+            <ValueCard
+              key={industry.title}
+              icon={industry.icon}
+              title={industry.title}
+              description={industry.description}
+              className="min-h-[22vw] max-[1025px]:min-h-0"
+            />
+          ))}
+        </FadeUp>
+      </Section>
     </>
   );
 }

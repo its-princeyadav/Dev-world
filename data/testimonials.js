@@ -1,8 +1,10 @@
+// Client quotes. `image` is the avatar in the testimonial slider; without one, initials are shown.
 export const testimonials = [
   {
     quote:
       "Dev World rebuilt our core platform in three months flat and it hasn't gone down since. The team thinks like owners, not contractors.",
     author: "Sarah Chen",
+    image: "/images/testimonials/testimonial-1.webp",
     role: "VP Engineering",
     company: "Ledger Financial",
     rating: 5,
@@ -11,6 +13,7 @@ export const testimonials = [
     quote:
       "The most senior, communicative team we've worked with. Every sprint demo showed real, shippable progress.",
     author: "Marcus Webb",
+    image: "/images/testimonials/testimonial-5.webp",
     role: "CEO",
     company: "CareLoop Health",
     rating: 5,
@@ -19,6 +22,7 @@ export const testimonials = [
     quote:
       "They didn't just execute our spec — they improved it. That product thinking saved us months of rework.",
     author: "Priya Nair",
+    image: "/images/testimonials/testimonial-3.webp",
     role: "Head of Product",
     company: "FleetOS",
     rating: 5,
@@ -27,6 +31,7 @@ export const testimonials = [
     quote:
       "Our AI chatbot went from prototype to production in six weeks. Support tickets dropped 40% in the first month.",
     author: "Liam Foster",
+    image: "/images/testimonials/testimonial-4.webp",
     role: "Head of Support",
     company: "Northwind Retail",
     rating: 5,
@@ -35,6 +40,7 @@ export const testimonials = [
     quote:
       "Transparent, predictable, and genuinely good engineers. Exactly what you want from an outsourced team.",
     author: "Grace Kim",
+    image: "/images/testimonials/testimonial-2.webp",
     role: "COO",
     company: "Alto Logistics",
     rating: 4,
